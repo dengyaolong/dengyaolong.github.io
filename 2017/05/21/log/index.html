@@ -1,0 +1,867 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,经验,技术,日志," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="为什么要打日志？我认为主要有两点：  线上问题追踪 确认程序运行正常  什么时候打日志？这个问题没有绝对的标准，泛滥的日志会影响排查，缺乏关键日志则无法准确排查。最关键就是：仔细考虑你需要什么样的日志？对于我的打日志，包括但不限于：">
+<meta name="keywords" content="javascript,经验,技术,日志">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈谈Node.js日志">
+<meta property="og:url" content="http://yaolong.tech/2017/05/21/log/index.html">
+<meta property="og:site_name" content="T-Dragon">
+<meta property="og:description" content="为什么要打日志？我认为主要有两点：  线上问题追踪 确认程序运行正常  什么时候打日志？这个问题没有绝对的标准，泛滥的日志会影响排查，缺乏关键日志则无法准确排查。最关键就是：仔细考虑你需要什么样的日志？对于我的打日志，包括但不限于：">
+<meta property="og:updated_time" content="2017-05-21T07:50:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="谈谈Node.js日志">
+<meta name="twitter:description" content="为什么要打日志？我认为主要有两点：  线上问题追踪 确认程序运行正常  什么时候打日志？这个问题没有绝对的标准，泛滥的日志会影响排查，缺乏关键日志则无法准确排查。最关键就是：仔细考虑你需要什么样的日志？对于我的打日志，包括但不限于：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yaolong.tech/2017/05/21/log/"/>
+
+
+
+
+
+  <title>谈谈Node.js日志 | T-Dragon</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a42cae928cc92fc7bab88b98a070cef5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">T-Dragon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yaolong.tech/2017/05/21/log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="T-Dragon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="T-Dragon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">谈谈Node.js日志</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-21T15:43:20+08:00">
+                2017-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/21/log/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/05/21/log/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="为什么要打日志？"><a href="#为什么要打日志？" class="headerlink" title="为什么要打日志？"></a>为什么要打日志？</h3><p>我认为主要有两点：</p>
+<ol>
+<li>线上问题追踪</li>
+<li>确认程序运行正常</li>
+</ol>
+<h3 id="什么时候打日志？"><a href="#什么时候打日志？" class="headerlink" title="什么时候打日志？"></a>什么时候打日志？</h3><p>这个问题没有绝对的标准，泛滥的日志会影响排查，缺乏关键日志则无法准确排查。最关键就是：仔细考虑你需要什么样的日志？对于我的打日志，包括但不限于：<br><a id="more"></a></p>
+<ul>
+<li>应用的生命周期，如启动/退出/异常/重启</li>
+<li>路由请求，包括url，query，响应状态码，响应时间</li>
+<li>SQL，执行的SQL语句，响应时间，<strong><em>一定要避免敏感信息</em></strong></li>
+<li>JS异常错误，包括出错栈，出错信息</li>
+<li>底层/第三方接口调用，包括请求参数，返回结果，响应时间</li>
+<li>业务关键点。</li>
+</ul>
+<h3 id="日志需要包含什么信息？"><a href="#日志需要包含什么信息？" class="headerlink" title="日志需要包含什么信息？"></a>日志需要包含什么信息？</h3><ul>
+<li>日志正文。你需要的日志信息，这是最基础的。</li>
+<li>时间。大部分情况，精确到毫秒即可。</li>
+<li>日志级别。<a href="https://tools.ietf.org/html/rfc5424" target="_blank" rel="external">syslog</a>，分为7个级别。level数字越小，严重性越高。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">级别</th>
+<th style="text-align:left">意思</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">Emergency: 系统已经崩溃</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Alert: 必须马上处理</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Critical: 严重</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">Error: 错误信息</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">Warning: 可能影响系统功能</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">Notice: 不影响正常功能，但是需要注意</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">Informational: 一般信息</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">Debug: 调试信息</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>但是，我接触过的库，基本都会有自己的日志级别，如：<ul>
+<li><a href="https://github.com/npm/npmlog" target="_blank" rel="external">npmlog</a>，有6个级别：error/warn/info/verbose/debug/silly</li>
+<li><a href="https://github.com/trentm/node-bunyan#levels" target="_blank" rel="external">node-bunyun</a>，有6个级别：fatal/error/warn/info/debug/trace</li>
+</ul>
+</li>
+<li>label/filter。用于筛选日志，通常我会以功能模块来做label，有时候会直接用文件名。</li>
+</ul>
+<p>如果你的应用是多实例，多机器，最终收集到远程，你需要：</p>
+<ul>
+<li>机器信息：主机名，IP</li>
+<li>实例的pid</li>
+</ul>
+<p><em>如果你还不是Node.js，很有可能你还用到多线程，线程的id最好也打印出来。</em></p>
+<h3 id="怎么打日志"><a href="#怎么打日志" class="headerlink" title="怎么打日志"></a>怎么打日志</h3><p>有不少同学使用<code>console.log</code>来打印日志，这并不是一个好的选择，无法满足打印上面提到的“包含信息”，用专门的日志库是更优选择。下面分为两种情况</p>
+<h4 id="在module中打日志"><a href="#在module中打日志" class="headerlink" title="在module中打日志"></a>在module中打日志</h4><p>我们写moudle时候，主要是让功能模块化，让别人可以轻松复用。出现问题时候，也是需要log来调试。如果直接用console方式打印日志，那么无论如何，日志都会打出，使用方的日志则会造成污染。这个时候，使用TJ写的DEBUG库是最好的选择。</p>
+<p>第一步，安装DEBUG库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install debug --save</div></pre></td></tr></table></figure>
+<p>第二步，使用debug代替console</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// module: add.js</div><div class="line">const debug = require(&apos;debug&apos;)(&apos;myapp:add&apos;);</div><div class="line"></div><div class="line">module.exports = function(a, b) &#123; </div><div class="line">  debug()</div><div class="line">  let c = a + b</div><div class="line">  debug(`recieve %d, %d, return %d`, a, b, c)</div><div class="line">  return c</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第三步，在需要调试时候带上环境变量即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEBUG=myapp:* node  -e &quot;require(&apos;./add.js&apos;)(1,2)&quot;</div></pre></td></tr></table></figure>
+<h4 id="在应用中打日志"><a href="#在应用中打日志" class="headerlink" title="在应用中打日志"></a>在应用中打日志</h4><p>试过不少日志库，掉了很多坑，这里推荐使用winston</p>
+<p>winston是一个异步日志库，他可以支持多种输出源（直接的std，文件，），默认有6个日志级别（可以自定义），能够很好地支持日志格式化，查询日志。</p>
+<p>第一步，安装winston</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i winston --save</div></pre></td></tr></table></figure>
+<p>第二步，创建winston示例打日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">const winston = require(&apos;winston&apos;)</div><div class="line">winston.info(&apos;current level = info&apos;)</div></pre></td></tr></table></figure>
+<p>注意，winston默认使用的就是上文提到的npmlog的日志级别。我们可以使用，<code>winston[level]</code>直接打印对应级别日志，比如</p>
+<ul>
+<li>winston.error </li>
+<li>winston.info</li>
+</ul>
+<p>也可以，使用<code>winston.log(level, &#39;日志内容&#39;)</code></p>
+<p>第三步，更丰富的winston配置</p>
+<p>我们可以设置多个transports，让日志可以输出到多个源。还可以让每一条log都打印出当前时间，还可以打label。下面就是一个case:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">const winston = require(&apos;winston&apos;);</div><div class="line"></div><div class="line">const logger = new winston.Logger(&#123;</div><div class="line">    transports: [</div><div class="line">        new (winston.transports.Console)(&#123; </div><div class="line">            timestamp: Date.now, // 自定义时间格式</div><div class="line">            colorize: true, // 上色</div><div class="line">            label: &apos;myapp:test&apos;, // 打label</div><div class="line">        &#125;),</div><div class="line">        new (winston.transports.File)(&#123;</div><div class="line">            name: &apos;error.log&apos;, </div><div class="line">            filename: &apos;error.log&apos;, //输出的文件</div><div class="line">            level: &apos;error&apos;, // 指定error的log才打印到该文件</div><div class="line">        &#125;)</div><div class="line">    ]</div><div class="line">&#125;)</div><div class="line"></div><div class="line">logger.info(&apos;1&apos;)</div><div class="line">logger.error(&apos;1&apos;)</div></pre></td></tr></table></figure>
+<p>结果就是</p>
+<ul>
+<li><p>stdout输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">1495351378495 - info: [myapp:test] info log</div></pre></td></tr></table></figure>
+</li>
+<li><p>stderr输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">1495351390067 - error: [myapp:test] error log</div></pre></td></tr></table></figure>
+</li>
+<li><p>同时error.log出现日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;&quot;level&quot;:&quot;error&quot;,&quot;message&quot;:&quot;error log&quot;,&quot;timestamp&quot;:&quot;2017-05-21T07:24:29.674Z&quot;&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>更多用法，可以参考一下<a href="https://github.com/winstonjs/winston" target="_blank" rel="external">https://github.com/winstonjs/winston</a></p>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><ul>
+<li>千万不要在日志中打印敏感信息，比如：账号/密码/邮箱/手机/银行卡</li>
+<li>关键步骤可以多打些日志，不然偶现问题就很难得到解决</li>
+<li>分布式的日志收集需求，可参考一下现成系统：<a href="https://flume.apache.org/" target="_blank" rel="external">flume</a>，<a href="https://github.com/facebookarchive/scribe" target="_blank" rel="external">scribe</a>(facebook出产，但是不维护了)。</li>
+<li>听说日志与单步调试更配哦~</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/经验/" rel="tag"># 经验</a>
+          
+            <a href="/tags/技术/" rel="tag"># 技术</a>
+          
+            <a href="/tags/日志/" rel="tag"># 日志</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/27/ES6/" rel="next" title="谈谈我在工作中使用到的ES6（一）">
+                <i class="fa fa-chevron-left"></i> 谈谈我在工作中使用到的ES6（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/12/gmtc2017/" rel="prev" title="GMTC2017 参会笔记——性能优化专题">
+                GMTC2017 参会笔记——性能优化专题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/05/21/log/"
+           data-title="谈谈Node.js日志" data-url="http://yaolong.tech/2017/05/21/log/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg"
+               alt="T-Dragon" />
+          <p class="site-author-name" itemprop="name">T-Dragon</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/dengyaolong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/derondream" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/dengyaolong" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <div class="author-introduce">喜欢运动的厨子，平时弹弹吉他，职业是前端工程师，也写点后端</div>
+<img src="http://7tebxh.com1.z0.glb.clouddn.com/dunk.png" class="dunk">
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要打日志？"><span class="nav-number">1.</span> <span class="nav-text">为什么要打日志？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候打日志？"><span class="nav-number">2.</span> <span class="nav-text">什么时候打日志？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志需要包含什么信息？"><span class="nav-number">3.</span> <span class="nav-text">日志需要包含什么信息？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么打日志"><span class="nav-number">4.</span> <span class="nav-text">怎么打日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在module中打日志"><span class="nav-number">4.1.</span> <span class="nav-text">在module中打日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在应用中打日志"><span class="nav-number">4.2.</span> <span class="nav-text">在应用中打日志</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补充"><span class="nav-number">5.</span> <span class="nav-text">补充</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">T-Dragon</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yaolongtech"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

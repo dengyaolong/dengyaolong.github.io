@@ -1,0 +1,966 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="域名 尽量将api部署在专用域名下，如：https://api.example.com 如果带版本，可以加入版本号，如：https://api.example.com/v1/  URI 使用复数名词表示资源集合 尽量不要出现动词。如 /users/add，使用 POST /users替代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无污染无添加的restful">
+<meta property="og:url" content="http://yaolong.tech/2016/10/28/无污染无添加的restful/index.html">
+<meta property="og:site_name" content="T-Dragon">
+<meta property="og:description" content="域名 尽量将api部署在专用域名下，如：https://api.example.com 如果带版本，可以加入版本号，如：https://api.example.com/v1/  URI 使用复数名词表示资源集合 尽量不要出现动词。如 /users/add，使用 POST /users替代">
+<meta property="og:updated_time" content="2017-05-03T16:42:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="无污染无添加的restful">
+<meta name="twitter:description" content="域名 尽量将api部署在专用域名下，如：https://api.example.com 如果带版本，可以加入版本号，如：https://api.example.com/v1/  URI 使用复数名词表示资源集合 尽量不要出现动词。如 /users/add，使用 POST /users替代">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yaolong.tech/2016/10/28/无污染无添加的restful/"/>
+
+
+
+
+
+  <title>无污染无添加的restful | T-Dragon</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a42cae928cc92fc7bab88b98a070cef5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">T-Dragon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yaolong.tech/2016/10/28/无污染无添加的restful/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="T-Dragon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="T-Dragon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">无污染无添加的restful</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-28T23:39:28+08:00">
+                2016-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/28/无污染无添加的restful/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/28/无污染无添加的restful/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><ol>
+<li>尽量将api部署在专用域名下，如：<a href="https://api.example.com" target="_blank" rel="external">https://api.example.com</a></li>
+<li>如果带版本，可以加入版本号，如：<a href="https://api.example.com/v1/" target="_blank" rel="external">https://api.example.com/v1/</a></li>
+</ol>
+<h3 id="URI"><a href="#URI" class="headerlink" title="URI"></a>URI</h3><ol>
+<li>使用复数名词表示资源集合</li>
+<li>尽量不要出现动词。如 /users/add，使用 POST /users替代<a id="more"></a>
+<h3 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h3><h4 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h4>GET：查询资源</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GET /users</td>
+<td style="text-align:left">获取用户信息列表</td>
+</tr>
+<tr>
+<td style="text-align:left">GET /users/1</td>
+<td style="text-align:left">获取id=1的用户信息</td>
+</tr>
+<tr>
+<td style="text-align:left">GET /users/1/friends</td>
+<td style="text-align:left">获取id=1的用户的朋友列表</td>
+</tr>
+</tbody>
+</table>
+<p>POST:  创建资源</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">POST /users</td>
+<td style="text-align:left">添加用户</td>
+</tr>
+<tr>
+<td style="text-align:left">POST /users/1/friends</td>
+<td style="text-align:left">给id=1的用户添加好友</td>
+</tr>
+</tbody>
+</table>
+<p>PUT: 更新资源</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">PUT /users/1</td>
+<td style="text-align:left">更新id=1的用户</td>
+</tr>
+<tr>
+<td style="text-align:left">PUT /users/1/friends/2</td>
+<td style="text-align:left">修改id=1的用户的id=2的好友的信息</td>
+</tr>
+</tbody>
+</table>
+<p>DELETE: 删除资源</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">DELETE /users/1</td>
+<td style="text-align:left">删除id=1的用户</td>
+</tr>
+</tbody>
+</table>
+<h3 id="安全性与幂等性"><a href="#安全性与幂等性" class="headerlink" title="安全性与幂等性"></a>安全性与幂等性</h3><ul>
+<li>安全性：不会改变资源</li>
+<li>幂等性： 每次执行对资源状态改变效果是等价的。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Method</th>
+<th style="text-align:left">安全性</th>
+<th style="text-align:left">幂等性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GET</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+</tr>
+<tr>
+<td style="text-align:left">POST</td>
+<td style="text-align:left">×</td>
+<td style="text-align:left">×</td>
+</tr>
+<tr>
+<td style="text-align:left">PUT</td>
+<td style="text-align:left">×</td>
+<td style="text-align:left">√</td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE</td>
+<td style="text-align:left">×</td>
+<td style="text-align:left">√</td>
+</tr>
+</tbody>
+</table>
+<h3 id="条件过滤"><a href="#条件过滤" class="headerlink" title="条件过滤"></a>条件过滤</h3><p>在querystring中加入条件过滤, 常见的有</p>
+<ul>
+<li>?limit=20，限制头20条</li>
+<li>?offset=10，偏移10条</li>
+<li>?order=asc&amp;sortBy=x，按x顺序排</li>
+<li>?x=1，获取x=1的数据</li>
+</ul>
+<h3 id="返回合适的状态码"><a href="#返回合适的状态码" class="headerlink" title="返回合适的状态码"></a>返回合适的状态码</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">状态码</th>
+<th style="text-align:left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">200</td>
+<td style="text-align:left">GET请求成功</td>
+</tr>
+<tr>
+<td style="text-align:left">201</td>
+<td style="text-align:left">POST同步请求完成</td>
+</tr>
+<tr>
+<td style="text-align:left">202</td>
+<td style="text-align:left">POST, DELETE异步请求接受</td>
+</tr>
+<tr>
+<td style="text-align:left">204</td>
+<td style="text-align:left">无返回，一般用于DELETE请求成功</td>
+</tr>
+<tr>
+<td style="text-align:left">206</td>
+<td style="text-align:left">GET请求成功，但返回只是部分结果</td>
+</tr>
+<tr>
+<td style="text-align:left">401</td>
+<td style="text-align:left">用户没有认证（密码错误，令牌错误）</td>
+</tr>
+<tr>
+<td style="text-align:left">403</td>
+<td style="text-align:left">用户已经认证，但是请求被禁止，比如权限问题/黑名单</td>
+</tr>
+<tr>
+<td style="text-align:left">404</td>
+<td style="text-align:left">请求资源不存在</td>
+</tr>
+<tr>
+<td style="text-align:left">405</td>
+<td style="text-align:left">请求方法不允许</td>
+</tr>
+<tr>
+<td style="text-align:left">409</td>
+<td style="text-align:left">冲突导致的请求失败，一般用于后端处理数据时候约束冲突</td>
+</tr>
+</tbody>
+</table>
+<p>更多看<a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" target="_blank" rel="external">https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+<h3 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h3><p>获取资源列表，尽量都用JSON</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求</th>
+<th style="text-align:left">返回</th>
+<th style="text-align:left">请求示例</th>
+<th style="text-align:left">返回示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">GET /resources</td>
+<td style="text-align:left">资源对象数组（列表）</td>
+<td style="text-align:left">GET /users</td>
+<td style="text-align:left"><pre><code>[<br>  {id: 1,name: ‘a’}, <br>  {id: 2,name: ‘b’}<br>]</code></pre></td>
+</tr>
+<tr>
+<td style="text-align:left">GET /resources/:id</td>
+<td style="text-align:left">单个资源对象</td>
+<td style="text-align:left">GET /users/1</td>
+<td style="text-align:left"><pre><code>{<br>  id: 1,<br>  name: ‘a’<br>}</code></pre></td>
+</tr>
+<tr>
+<td style="text-align:left">POST /resources</td>
+<td style="text-align:left">创建后的资源对象</td>
+<td style="text-align:left">POST /users<br>payload: {name: ‘c’}</td>
+<td style="text-align:left"><pre><code>{<br>  id: 3,<br>  name: ‘c’<br>}</code></pre></td>
+</tr>
+<tr>
+<td style="text-align:left">PUT /resources/:id</td>
+<td style="text-align:left">修改后的资源对象</td>
+<td style="text-align:left">PUT /users/3<br>payload: {name: ‘cc’}</td>
+<td style="text-align:left"><pre><code>{<br>  id: 3,<br>  name: ‘cc’<br>}</code></pre></td>
+</tr>
+<tr>
+<td style="text-align:left">DELETE /resources/:id</td>
+<td style="text-align:left">空，状态码为204</td>
+<td style="text-align:left">DELETE /users/3</td>
+<td style="text-align:left">空</td>
+</tr>
+</tbody>
+</table>
+<h3 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h3><p>出现错误返回出错信息，以及对应的状态码。</p>
+<p>这里建议是：</p>
+<ul>
+<li>body.message是有用的错误信息</li>
+<li>body.code是具体业务前后端约定的一些错误标识</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  message: 错误信息字符串,</div><div class="line">  code: 特定错误编码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>示例: 创建重复id的用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  message: &quot;user id unique constraint error&quot;,</div><div class="line">  code: 1</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/29/qcon2016/" rel="next" title="QCon 2016北京笔记">
+                <i class="fa fa-chevron-left"></i> QCon 2016北京笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/27/KPI/" rel="prev" title="2017 T-Dragon's KPI">
+                2017 T-Dragon's KPI <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/28/无污染无添加的restful/"
+           data-title="无污染无添加的restful" data-url="http://yaolong.tech/2016/10/28/无污染无添加的restful/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg"
+               alt="T-Dragon" />
+          <p class="site-author-name" itemprop="name">T-Dragon</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/dengyaolong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/derondream" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/dengyaolong" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <div class="author-introduce">喜欢运动的厨子，平时弹弹吉他，职业是前端工程师，也写点后端</div>
+<img src="http://7tebxh.com1.z0.glb.clouddn.com/dunk.png" class="dunk">
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#域名"><span class="nav-number">1.</span> <span class="nav-text">域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#URI"><span class="nav-number">2.</span> <span class="nav-text">URI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CRUD"><span class="nav-number">3.1.</span> <span class="nav-text">CRUD</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全性与幂等性"><span class="nav-number">4.</span> <span class="nav-text">安全性与幂等性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件过滤"><span class="nav-number">5.</span> <span class="nav-text">条件过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回合适的状态码"><span class="nav-number">6.</span> <span class="nav-text">返回合适的状态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回结果"><span class="nav-number">7.</span> <span class="nav-text">返回结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误处理"><span class="nav-number">8.</span> <span class="nav-text">错误处理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">T-Dragon</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yaolongtech"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,889 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="学习分享,笔记,架构," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="总结气氛不错，有思考的点。 参加了第一天，扎营在系统架构专场和新兴技术场。 腾讯神盾开放通用推荐系统神盾推荐系统，最强的亮点就是：">
+<meta name="keywords" content="学习分享,笔记,架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QCon 2016北京笔记">
+<meta property="og:url" content="http://yaolong.tech/2016/04/29/qcon2016/index.html">
+<meta property="og:site_name" content="T-Dragon">
+<meta property="og:description" content="总结气氛不错，有思考的点。 参加了第一天，扎营在系统架构专场和新兴技术场。 腾讯神盾开放通用推荐系统神盾推荐系统，最强的亮点就是：">
+<meta property="og:image" content="http://7tebxh.com1.z0.glb.clouddn.com/qcon2016-2.png">
+<meta property="og:image" content="http://7tebxh.com1.z0.glb.clouddn.com/2016Qcon.png">
+<meta property="og:image" content="http://7tebxh.com1.z0.glb.clouddn.com/qcon2016.png">
+<meta property="og:updated_time" content="2017-05-03T16:42:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QCon 2016北京笔记">
+<meta name="twitter:description" content="总结气氛不错，有思考的点。 参加了第一天，扎营在系统架构专场和新兴技术场。 腾讯神盾开放通用推荐系统神盾推荐系统，最强的亮点就是：">
+<meta name="twitter:image" content="http://7tebxh.com1.z0.glb.clouddn.com/qcon2016-2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yaolong.tech/2016/04/29/qcon2016/"/>
+
+
+
+
+
+  <title>QCon 2016北京笔记 | T-Dragon</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a42cae928cc92fc7bab88b98a070cef5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">T-Dragon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yaolong.tech/2016/04/29/qcon2016/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="T-Dragon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="T-Dragon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">QCon 2016北京笔记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-29T19:07:43+08:00">
+                2016-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/04/29/qcon2016/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/29/qcon2016/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>气氛不错，有思考的点。</p>
+<p>参加了第一天，扎营在系统架构专场和新兴技术场。</p>
+<h3 id="腾讯神盾开放通用推荐系统"><a href="#腾讯神盾开放通用推荐系统" class="headerlink" title="腾讯神盾开放通用推荐系统"></a>腾讯神盾开放通用推荐系统</h3><p>神盾推荐系统，最强的亮点就是：<br><a id="more"></a></p>
+<ul>
+<li>通用，支撑200+业务，只需要简单的配置就可以接入。同时，维护接入配置的只有两个人。</li>
+<li>开放，特征，训练方法都可以配置。</li>
+</ul>
+<p>在讲神盾推荐系统的分布式计算引擎特点时候，讲师提到了QQ好友推荐计算，拉取二度关系，从∑sum(ti) 到∑max(ti)。在腾讯这个用户级别，是一个非常厉害的特点。</p>
+<p><img src="http://7tebxh.com1.z0.glb.clouddn.com/qcon2016-2.png" alt=""></p>
+<p>后面讲述同步编程易于开发但是性能低，异步性能高但是开发慢。所以他们搞了一套，写起来同步但是实际异步的东西。此处，脑海中飘过了promise, then, yield, await….</p>
+<p>在整个系统架构上，尽管推荐系统看起来不是一个简单的SDK，但是其充分地考虑到了业务的使用场景：</p>
+<ul>
+<li>轻松接入（2个人支撑200+业务，每个业务不超过半天）</li>
+<li>高可配置（算法、特征等都是可以配置的）</li>
+<li>效果展示</li>
+</ul>
+<h3 id="58到家实时消息平台架构实现细节"><a href="#58到家实时消息平台架构实现细节" class="headerlink" title="58到家实时消息平台架构实现细节"></a>58到家实时消息平台架构实现细节</h3><p>这是一个非常细节细腻的分享，整个分享，根据58到家的实际业务，围绕三个方向：</p>
+<ul>
+<li>端到端：用户，商家，客服之间的对话</li>
+<li>云到端：订单push</li>
+<li>端到云：司机的GPS上报</li>
+</ul>
+<p>传统的解决方案：</p>
+<ul>
+<li>端到云：polling上报，http短连接，web-server</li>
+<li>云到端：APNS（不可靠，不实时和限速都是很大的问题），mqtt（可用性是最大的问题）</li>
+</ul>
+<p>58的实时消息平台架构</p>
+<ul>
+<li>端到云：<ul>
+<li>TCP长连接，但业务耦合非常大</li>
+<li>引入消息总线，与业务后端解耦</li>
+</ul>
+</li>
+<li>云到端：<ul>
+<li>RPC，但是不在线则消息不可达</li>
+<li>引入缓存存储用户在线状态<br>端到端：</li>
+<li>用户不在线，收不到消息</li>
+<li>使用离线消息解决，但是消息可能会丢失</li>
+<li>server消息存储，直到落地（收到ACK）再进行删除，没收到，server重发</li>
+<li>client收到重复消息，client进行去重<br><img src="http://7tebxh.com1.z0.glb.clouddn.com/2016Qcon.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<p>扩展性</p>
+<ul>
+<li>协议：定长包头+cmd+变长包体</li>
+<li>兼容支持变更：保持接口，协议透明，可扩展的协议</li>
+<li>xml：富文本，图片，“正在输入”，“震一下”</li>
+</ul>
+<p>后来讲师，提到了一个高可用的redis，在我看起来，就是分布式的情况下，某一个机子挂了，能够较好地切换….</p>
+<h3 id="从万物生长到繁荣有序——重新思考移动开发"><a href="#从万物生长到繁荣有序——重新思考移动开发" class="headerlink" title="从万物生长到繁荣有序——重新思考移动开发"></a>从万物生长到繁荣有序——重新思考移动开发</h3><p>ppt做得比较好，主要就是讲述了一下移动开发的背景和机遇，之后讲了一下组件化。最后安利了一下weex。</p>
+<h3 id="早上架构专场小结"><a href="#早上架构专场小结" class="headerlink" title="早上架构专场小结"></a>早上架构专场小结</h3><p>每一场关键词就是：围绕业务，解耦，可扩展，高度可配置。</p>
+<h3 id="迎着业务增长改进架构的新思路"><a href="#迎着业务增长改进架构的新思路" class="headerlink" title="迎着业务增长改进架构的新思路"></a>迎着业务增长改进架构的新思路</h3><p>来之前就觉得滴滴的这场很水，结果出乎意料的水。</p>
+<p>整个过程有点像“我们的历史”，就catch到之前滴滴的快速迭代，能work就好（所以现在很多历史问题吧，以后还得找个大牛重搞）。</p>
+<p>听了十分钟走了。不过有一句话说得很有意思，“突如其来的暴涨（滴滴的打车活动），必然会带来系统的不可用，因为以前的架构都是贴近业务的。否则，在暴涨这个过程系统还能承受，那就是之前的开发过度优化了。” 其实，我觉得架构得好，暴涨的话，加机器就ok了吧。</p>
+<h3 id="人脸识别技术在商业银行的应用及挑战"><a href="#人脸识别技术在商业银行的应用及挑战" class="headerlink" title="人脸识别技术在商业银行的应用及挑战"></a>人脸识别技术在商业银行的应用及挑战</h3><p>从滴滴那场离开，去了听人脸识别，发觉比我想象中有趣，虽然不涉及到直接的技术，但是能带来很多有趣的思考。</p>
+<p>人脸识别，有什么业务场景呢？</p>
+<ul>
+<li>刷脸支付</li>
+<li>刷脸取款</li>
+<li>刷脸找回密码</li>
+<li>刷脸登陆<br>….</li>
+</ul>
+<p>人脸 vs 密码 vs 指纹、虹膜 、 静脉 vs 声纹</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">密码</td>
+<td style="text-align:left">普遍、成熟</td>
+<td>容易忘记</td>
+</tr>
+<tr>
+<td style="text-align:left">指纹、虹膜 、 静脉</td>
+<td style="text-align:left">准确</td>
+<td>侵入式体验，效果差。<br>识别慢，设备贵。<br>操作麻烦</td>
+</tr>
+<tr>
+<td style="text-align:left">声纹</td>
+<td style="text-align:left">体验好</td>
+<td>容易被复制</td>
+</tr>
+<tr>
+<td style="text-align:left">人脸识别</td>
+<td style="text-align:left">体验好<br>成本低<br>速度快<br>有可靠对比源<br></td>
+<td>未够成熟</td>
+</tr>
+</tbody>
+</table>
+<p>系统架构，看起来非常简单。<br><img src="http://7tebxh.com1.z0.glb.clouddn.com/qcon2016.png" alt=""><br>难点：</p>
+<ul>
+<li>采集图像时候的问题<ul>
+<li>玻璃光、逆光、自动对焦。</li>
+<li>讲师讲得有点快，好像解决方案是前置摄像头+要求画质。</li>
+</ul>
+</li>
+<li>生理特征差异<ul>
+<li>眼睛小</li>
+<li>留胡子</li>
+<li>年龄变化</li>
+</ul>
+</li>
+<li>姿态和配饰<ul>
+<li>戴眼镜</li>
+<li>角度</li>
+<li>动作</li>
+</ul>
+</li>
+</ul>
+<p>难以解决的问题：</p>
+<ul>
+<li>化浓妆（大家都笑出声了）</li>
+<li>双胞胎</li>
+<li>戴墨镜</li>
+</ul>
+<p>活体检测与攻防</p>
+<ul>
+<li>照片，视频，甚至现在非常火热的VR都很容易做出一个非常相像的图像，难点就在于识别活体了<ul>
+<li>目前解决姿势是：跟着提示做动作+限制尝试次数</li>
+<li>这种姿势的问题在于：体验非常差</li>
+</ul>
+</li>
+</ul>
+<p>在QA环节，有一个人问了一个问题非常意思，“人脸库万一被托库了，那就是不可修复（可以直接拿着这个对比源制造图像），你们怎么有考虑解决方案吗？”</p>
+<p>讲师的回答是：“我们的人脸库放在数据中心，非常安全，不考虑托库”</p>
+<h3 id="知乎反作弊系统演变"><a href="#知乎反作弊系统演变" class="headerlink" title="知乎反作弊系统演变"></a>知乎反作弊系统演变</h3><p>来得有点晚，我的关注点在于反作弊，然而讲师并没有讲任何反作弊。</p>
+<p>记得起的就只有v1用的是mongo，到了v2用了HBase，因为任性（唯一一个像样的理由就是“社区活跃”，但是这样换db真的没有说服力）</p>
+<p>整个演讲，最精彩的一句就是：“架构师更需要的是克制”。技术变更太快，如果一个东西看起来很酷炫我们就去使用，最后效果很有可能会跟自己的预想大打折扣。</p>
+<h3 id="天猫双11晚会和疯狂城互动的技术方案"><a href="#天猫双11晚会和疯狂城互动的技术方案" class="headerlink" title="天猫双11晚会和疯狂城互动的技术方案"></a>天猫双11晚会和疯狂城互动的技术方案</h3><p>利用1分钟时间直播时间差，以及人工现场控制B端后台，也是够厉害的…</p>
+<p>附：Qcon SLIDES 下载 <a href="http://2016.qconbeijing.com/slides" target="_blank" rel="external">http://2016.qconbeijing.com/slides</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习分享/" rel="tag"># 学习分享</a>
+          
+            <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+            <a href="/tags/架构/" rel="tag"># 架构</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/01/UUOC/" rel="next" title="UUOC">
+                <i class="fa fa-chevron-left"></i> UUOC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/28/无污染无添加的restful/" rel="prev" title="无污染无添加的restful">
+                无污染无添加的restful <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/04/29/qcon2016/"
+           data-title="QCon 2016北京笔记" data-url="http://yaolong.tech/2016/04/29/qcon2016/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg"
+               alt="T-Dragon" />
+          <p class="site-author-name" itemprop="name">T-Dragon</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/dengyaolong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/derondream" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/dengyaolong" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <div class="author-introduce">喜欢运动的厨子，平时弹弹吉他，职业是前端工程师，也写点后端</div>
+<img src="http://7tebxh.com1.z0.glb.clouddn.com/dunk.png" class="dunk">
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#腾讯神盾开放通用推荐系统"><span class="nav-number">2.</span> <span class="nav-text">腾讯神盾开放通用推荐系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#58到家实时消息平台架构实现细节"><span class="nav-number">3.</span> <span class="nav-text">58到家实时消息平台架构实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从万物生长到繁荣有序——重新思考移动开发"><span class="nav-number">4.</span> <span class="nav-text">从万物生长到繁荣有序——重新思考移动开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#早上架构专场小结"><span class="nav-number">5.</span> <span class="nav-text">早上架构专场小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迎着业务增长改进架构的新思路"><span class="nav-number">6.</span> <span class="nav-text">迎着业务增长改进架构的新思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#人脸识别技术在商业银行的应用及挑战"><span class="nav-number">7.</span> <span class="nav-text">人脸识别技术在商业银行的应用及挑战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#知乎反作弊系统演变"><span class="nav-number">8.</span> <span class="nav-text">知乎反作弊系统演变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#天猫双11晚会和疯狂城互动的技术方案"><span class="nav-number">9.</span> <span class="nav-text">天猫双11晚会和疯狂城互动的技术方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">T-Dragon</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yaolongtech"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
