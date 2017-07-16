@@ -1,0 +1,810 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,工作,经验,技术,前端,IndexedDB," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是IndexedDB？IndexedDB是HTML5的API，用于客户端本地存储大量数据，并且提供索引进行高性能检索。 如何使用？创建数据库使用indexedDB.open(dbname, version)函数可以创建/打开数据库，第一个参数是数据库名称，第二个参数是版本号，必须是正整数。返回的是连接请求对象(IDBOpenRequest)实例。">
+<meta name="keywords" content="javascript,工作,经验,技术,前端,IndexedDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器存储——IndexedDB">
+<meta property="og:url" content="http://yaolong.tech/2017/07/16/indexeddb/index.html">
+<meta property="og:site_name" content="T-Dragon">
+<meta property="og:description" content="什么是IndexedDB？IndexedDB是HTML5的API，用于客户端本地存储大量数据，并且提供索引进行高性能检索。 如何使用？创建数据库使用indexedDB.open(dbname, version)函数可以创建/打开数据库，第一个参数是数据库名称，第二个参数是版本号，必须是正整数。返回的是连接请求对象(IDBOpenRequest)实例。">
+<meta property="og:updated_time" content="2017-07-16T07:50:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器存储——IndexedDB">
+<meta name="twitter:description" content="什么是IndexedDB？IndexedDB是HTML5的API，用于客户端本地存储大量数据，并且提供索引进行高性能检索。 如何使用？创建数据库使用indexedDB.open(dbname, version)函数可以创建/打开数据库，第一个参数是数据库名称，第二个参数是版本号，必须是正整数。返回的是连接请求对象(IDBOpenRequest)实例。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yaolong.tech/2017/07/16/indexeddb/"/>
+
+
+
+
+
+  <title>浏览器存储——IndexedDB | T-Dragon</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a42cae928cc92fc7bab88b98a070cef5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband">
+      <img src="http://7tebxh.com1.z0.glb.clouddn.com/dunk.png" class="dunk">
+    </div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">T-Dragon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yaolong.tech/2017/07/16/indexeddb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="T-Dragon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="T-Dragon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">浏览器存储——IndexedDB</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-16T14:43:12+08:00">
+                2017-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/16/indexeddb/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/16/indexeddb/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是IndexedDB？"><a href="#什么是IndexedDB？" class="headerlink" title="什么是IndexedDB？"></a>什么是IndexedDB？</h3><p>IndexedDB是HTML5的API，用于客户端本地存储大量数据，并且提供索引进行高性能检索。</p>
+<h3 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h3><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><p>使用<code>indexedDB.open(dbname, version)</code>函数可以创建/打开数据库，第一个参数是数据库名称，第二个参数是版本号，必须是正整数。返回的是连接请求对象(<a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBOpenRequest" target="_blank" rel="external">IDBOpenRequest</a>)实例。</p>
+<a id="more"></a>
+<p>创建/打开数据库，有可能会触发这4个事件</p>
+<ul>
+<li><strong>onsuccess</strong> 成功，此时IDBOpenRequest.result会被置为数据库连接对象（<a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBDatabase" target="_blank" rel="external">IDBDatabase</a>），用于后续数据操作。</li>
+<li><strong>onerror</strong> 失败</li>
+<li><strong>onupgradeneeded</strong> 创建数据库，或者version发生变动</li>
+<li><strong>onblocked</strong> 发生版本变动时候，数据库被占用</li>
+</ul>
+<blockquote>
+<p>注意： 当数据库被成功创建时，会先触发upgradeneeded事件，再触发success。 </p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var openRequest = indexedDB.open(&apos;test-db-name&apos;);</div><div class="line"></div><div class="line">openRequest.onerror = function(e) &#123;</div><div class="line">  console.log(&apos;Database open error: &apos; + e.target.errorCode);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">openRequest.onsuccess = function(e) &#123;</div><div class="line">  console.log(&apos;Database created&apos;);</div><div class="line">  var db = openRequest.result;</div><div class="line">  // ... db就是IDBDatabase对象，用于数据库连接</div><div class="line">&#125;;</div><div class="line"></div><div class="line">openRequest.onupgradeneeded = function (e) &#123;</div><div class="line">  console.log(&apos;Database upgradeneeded&apos;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h4><p>使用<code>indexedDB.deleteDatabase(dbname)</code>即可删除对应的数据库。</p>
+<p>其主要有两个事件：</p>
+<ul>
+<li><strong>onsuccess</strong> 成功</li>
+<li><strong>onerror</strong> 失败</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var deleteRequest = indexedDB.deleteDatabase(&apos;test-db-name&apos;)</div><div class="line"></div><div class="line">deleteRequest.onsuccess = function(e) &#123;</div><div class="line">  console.log(&apos;Database deleted&apos;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">deleteRequest.onerror = function(e) &#123;</div><div class="line">  console.log(&apos;Database delete error: &apos; + e.target.errorCode);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="存储数据"><a href="#存储数据" class="headerlink" title="存储数据"></a>存储数据</h4><h5 id="创建对象存储"><a href="#创建对象存储" class="headerlink" title="创建对象存储"></a>创建对象存储</h5><p>indexedDB使用对象存储数据，在存储数据之前，需要创建对象存储(object store)。</p>
+<p>数据库句柄（IDBDatabase对象，比如：<code>indexedDB.open</code>成功后在<code>onsuccess</code>返回的result，onupgradeneeded返回的e.target.result）提供了函数<code>createObjectStore(objectStoreName, optionalParameters)</code>创建对象存储。</p>
+<p><code>option</code>有两个可选参数</p>
+<ul>
+<li><strong>keyPath</strong> 相当于数据库的key</li>
+<li><strong>autoIncrement</strong> 是否自增，默认为false</li>
+</ul>
+<blockquote>
+<p>注意： 同时设置<code>keyPath</code>和<code>autoIncrement</code>，会优先使用<code>keyPath</code>。如果设置了<code>keyPath</code>，会直接存。如果没有设置<code>keyPath</code>，会自动设置<code>keyPath</code>的值为<code>autoIncrement</code>的值。</p>
+</blockquote>
+<p>一般我们在会在onupgradeneeded上定义对象存储，所以新增对象存储时候，需要调用open时候传入新的version。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 传入版本才会触发upgradeneeded</div><div class="line">var openRequest = indexedDB.open(&apos;test-db-name&apos;, 2);</div><div class="line"></div><div class="line">openRequest.onupgradeneeded = function (e) &#123;</div><div class="line">  // 创建student对象存储</div><div class="line">  e.target.result.createObjectStore(&apos;student&apos;, &#123;keyPath: &apos;id&apos;&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h5 id="使用事务"><a href="#使用事务" class="headerlink" title="使用事务"></a>使用事务</h5><p>值得注意的是，indexedDB是事务模式的数据库，任何数据库操作都需要基于事务。</p>
+<p>使用<code>IDBDatabase.transaction(objectStoreNames, mode)</code>可以创建一个事务对象(<a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction" target="_blank" rel="external">IDBTransaction</a>)。第一个参数是对象存储名字数组，如果只有一个直接传字符串就可以。第二个参数是事务模式，有3个值。</p>
+<ul>
+<li><strong>readonly</strong> 只读模式，不能修改数据</li>
+<li><strong>readwrite</strong> 读写均可以</li>
+<li><strong>versionchange</strong> 用于操作对象存储定义，或者新建一个存储定义</li>
+</ul>
+<h5 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h5><p>使用<code>objectStore.add(item)</code>可以插入数据，<code>objectStore.put(item)</code>可以插入或者更新数据，相当于update or insert。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">openRequest.onsuccess = function(e) &#123;</div><div class="line">  // 获取IDBDatabase对象</div><div class="line">  var db = openRequest.result;</div><div class="line">  </div><div class="line">  // 创建一个事务</div><div class="line">  var transaction = db.transaction(&apos;student&apos;, &apos;readwrite&apos;);</div><div class="line">   </div><div class="line">  // 获取student的对象存储</div><div class="line">  var store = transaction.objectStore(&apos;student&apos;);</div><div class="line">  </div><div class="line">  // 往student添加数据</div><div class="line">  store.add(&#123;id: 6, name: &apos;dragon&apos;&#125;)</div><div class="line">  store.add(&#123;id: 8, name: &apos;t-dragon&apos;&#125;)</div><div class="line">  store.put(&#123;id: 8, name: &apos;dyl&apos;&#125;)</div><div class="line">  // 最后存储的是 &#123;id: 6, name: &apos;dragon&apos;&#125;, &#123;id: 8, name: &apos;dyl&apos;&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h4><p>使用<code>objectStore.put(item)</code>即可，在插入数据已提及。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">store.put(&#123;id: 8, name: &apos;yaolong&apos;&#125;)</div></pre></td></tr></table></figure></p>
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><p>使用<code>objectStore.delete(key)</code>可以按键值删除。使用<code>objectStore.clear()</code>可以清空数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">store.delete(8).onsuccess = function(e) &#123;</div><div class="line">  console.log(&apos;Database records deleted&apos;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h4><h5 id="使用键值查询数据"><a href="#使用键值查询数据" class="headerlink" title="使用键值查询数据"></a>使用键值查询数据</h5><p>使用<code>objectStore.get(key)</code>可以通过键值查询数据，成功查询后会再<code>onsuccess</code>回调参数event的target.result中。当数据不存在时候，event.target.result为undefined。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">store.get(8).onsuccess = function(e) &#123;</div><div class="line">  console.log(e.target.result);</div><div class="line">  // &#123;id: 8, name: &quot;dyl&quot;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">store.get(9).onsuccess = function(e) &#123;</div><div class="line">  console.log(e.target.result);</div><div class="line">  // undefined</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="使用索引查询数据"><a href="#使用索引查询数据" class="headerlink" title="使用索引查询数据"></a>使用索引查询数据</h5><p>使用<code>objectStore.createIndex(indexName, keypath, option)</code>创建一个索引(<a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBIndex" target="_blank" rel="external">IDBIndex</a>)，通常我们会放在创建对象存储之后。option有3个可选参数</p>
+<ul>
+<li><strong>unique</strong> 是否为唯一索引</li>
+<li><strong>multiEntry</strong> 当键值是数组时候，设置multiEntry会生成多条数据。比如 <code>{id: 1, skill: [&#39;football&#39;, &#39;swim&#39;]}</code>，在skill建立索引。加入<code>{multiEntry: true}</code>，建立索引后，会出现两条数据，分别是football， swim对应的数据。如果不设置，则只有一条，为[football, swim]对应的数据。</li>
+<li><strong>locale</strong> 指定排序规则，有三种可选<ul>
+<li><strong>区域编码字符串</strong> 比如en-US，zh-CN，可以参考<a href="http://www.science.co.il/Language/Locale-codes.php" target="_blank" rel="external">这里</a></li>
+<li><strong>auto</strong> 根据locale自动设定</li>
+<li><strong>null或者undefined</strong> 区域无关，最正常的JS字符串比较</li>
+</ul>
+</li>
+</ul>
+<p>使用<code>index.get</code>即可以通过索引查询数据。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/工作/" rel="tag"># 工作</a>
+          
+            <a href="/tags/经验/" rel="tag"># 经验</a>
+          
+            <a href="/tags/技术/" rel="tag"># 技术</a>
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+            <a href="/tags/IndexedDB/" rel="tag"># IndexedDB</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/12/gmtc2017/" rel="next" title="GMTC2017 参会笔记——性能优化专题">
+                <i class="fa fa-chevron-left"></i> GMTC2017 参会笔记——性能优化专题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/16/indexeddb/"
+           data-title="浏览器存储——IndexedDB" data-url="http://yaolong.tech/2017/07/16/indexeddb/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://7tebxh.com1.z0.glb.clouddn.com/dragon.jpg"
+               alt="T-Dragon" />
+          <p class="site-author-name" itemprop="name">T-Dragon</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/dengyaolong" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/derondream" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/dengyaolong" target="_blank" title="Zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <div class="author-introduce">喜欢运动的厨子，平时弹弹吉他，职业是前端工程师，也写点后端</div>
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是IndexedDB？"><span class="nav-number">1.</span> <span class="nav-text">什么是IndexedDB？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何使用？"><span class="nav-number">2.</span> <span class="nav-text">如何使用？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建数据库"><span class="nav-number">2.1.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据库"><span class="nav-number">2.2.</span> <span class="nav-text">删除数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储数据"><span class="nav-number">2.3.</span> <span class="nav-text">存储数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建对象存储"><span class="nav-number">2.3.1.</span> <span class="nav-text">创建对象存储</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用事务"><span class="nav-number">2.3.2.</span> <span class="nav-text">使用事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#插入数据"><span class="nav-number">2.3.3.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新数据"><span class="nav-number">2.4.</span> <span class="nav-text">更新数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">2.5.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询数据"><span class="nav-number">2.6.</span> <span class="nav-text">查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用键值查询数据"><span class="nav-number">2.6.1.</span> <span class="nav-text">使用键值查询数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用索引查询数据"><span class="nav-number">2.6.2.</span> <span class="nav-text">使用索引查询数据</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">T-Dragon</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"yaolongtech"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
