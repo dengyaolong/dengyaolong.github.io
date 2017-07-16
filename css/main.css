@@ -1696,7 +1696,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #17e0ff;
+  background: #9cffff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2876,6 +2876,11 @@ pre .javascript .function {
   color: #666;
   padding: 0 5px;
 }
+@media (min-width: 1360px) {
+  img.dunk {
+    display: block;
+  }
+}
 .headband {
   height: 0;
 }
@@ -2884,4 +2889,5 @@ pre .javascript .function {
   position: fixed;
   right: 0px;
   top: 0px;
+  display: none;
 }
